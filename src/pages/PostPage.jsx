@@ -60,6 +60,8 @@ export default function PostPage() {
       const fetchSpeechUrl = async () => {
         try {
           setSpeechUrlLoading(true);
+          // Strip HTML tags from the post content
+          const strippedContent = post.content.replace(/<[^>]+>/g, '');
           const res = await fetch(
             "http://localhost:3000/api/textToSpeechfun/textToSpeech",
             {
@@ -67,7 +69,7 @@ export default function PostPage() {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ text: post.content }),
+              body: JSON.stringify({ text: strippedContent }),
             }
           );
           const data = await res.json();
@@ -103,7 +105,7 @@ export default function PostPage() {
 
   return (
     <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
-      <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
+      <h1 className="text-3xl mt-10 p-3 text-center post_font website_font max-w-2xl mx-auto lg:text-4xl">
         {post && post.title}
       </h1>
       <Link
@@ -120,7 +122,6 @@ export default function PostPage() {
       ) : (
         <>
           <div className="margin_bottom">
-      
             <span className="ms-2 font-bold">Listen to article</span>
           </div>
           <audio id="post-audio" controls>
@@ -131,11 +132,14 @@ export default function PostPage() {
       )}
 
       <div className="post_image">
-        <img
-          src={post && post.image}
-          alt={post && post.title}
-          className="mt-10 p-3 max-h-[200px]  object-cover post_image"
-        />
+        <div className="p_img">
+          <img
+            style={{ width: "100%" }}
+            src={post && post.image}
+            alt={post && post.title}
+            className="mt-10 p-3 post_image"
+          />
+        </div>
         <div
           className=""
           dangerouslySetInnerHTML={{ __html: post && post.content }}
@@ -143,7 +147,7 @@ export default function PostPage() {
       </div>
 
       <div className="max-w-4xl mx-auto w-full">
-        <CallToAction />
+        {/* <CallToAction /> */}
       </div>
       <CommentSection postId={post._id} />
       <div className="flex flex-col justify-center items-center mb-5">
@@ -156,3 +160,4 @@ export default function PostPage() {
     </main>
   );
 }
+
