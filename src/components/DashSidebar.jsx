@@ -187,7 +187,7 @@ export default function DashSidebar() {
               Profile
             </Sidebar.Item>
           </Link>
-          {currentUser && currentUser.isAdmin && (
+          {/* {currentUser && currentUser.isAdmin && (
             <Link to='/dashboard?tab=posts'>
               <Sidebar.Item
                 active={tab === 'posts'}
@@ -197,7 +197,19 @@ export default function DashSidebar() {
                 Posts
               </Sidebar.Item>
             </Link>
-          )}
+          )} */}
+
+              {currentUser ? (
+            <Link to='/dashboard?tab=posts'>
+              <Sidebar.Item
+                active={tab === 'posts'}
+                icon={HiDocumentText}
+                as='div'
+              >
+                Posts
+              </Sidebar.Item>
+            </Link>
+          ): ''}
           {currentUser && currentUser.isAdmin && (
             <>
               <Link to='/dashboard?tab=users'>
